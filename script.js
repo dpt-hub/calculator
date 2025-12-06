@@ -61,7 +61,8 @@ const populateDisplay = () => {
     let storedNumber = null;
     let newNumber = null;
     let operator = null;
-    let displayArray = []
+    let displayArray = [];
+    let resetOnNextDigit = false;
 
     // Calculator shows 0 when booted
     display.textContent = 0;
@@ -91,7 +92,16 @@ const populateDisplay = () => {
 
     // Logic when user presses numbers
     numbers.forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", () => {            
+            
+            if (resetOnNextDigit) {
+                storedNumber = null;
+                newNumber = null;
+                operator = null;
+                displayArray = [];
+                resetOnNextDigit = false;
+            }
+            
             let value = Number(btn.textContent)
             displayArray.push(value)
             display.textContent = displayArray.join("")
@@ -100,6 +110,12 @@ const populateDisplay = () => {
 
     // Logic when user presses decimal point
     decimal.addEventListener("click", (event) => {
+        
+        if (resetOnNextDigit) {
+                displayArray = [];
+                resetOnNextDigit = false;
+            }
+        
         let value = event.target.textContent
         if (!displayArray.includes(value)) {
             displayArray.push(value)
@@ -136,6 +152,7 @@ const populateDisplay = () => {
                     let calc = calculation(storedNumber, newNumber, operator)
                     display.textContent = calc
                     storedNumber = calc
+                    resetOnNextDigit = true;
                     newNumber = null
                     operator = value
                 }
@@ -164,6 +181,7 @@ const populateDisplay = () => {
             let value = calculation(storedNumber, newNumber, operator)
             display.textContent = value
             storedNumber = value
+            resetOnNextDigit = true;
             console.log(storedNumber)
             console.log(newNumber)
             console.log(operator)
@@ -184,7 +202,7 @@ const populateDisplay = () => {
     backspace.addEventListener("click", () => {
         if (displayArray.length !== 0) {
             displayArray.pop()
-            display.textContent = displayArray.join("")
+            display.textContent = displayArray.join("") || 0;
         }
     })
 }
