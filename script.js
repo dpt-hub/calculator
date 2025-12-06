@@ -66,6 +66,27 @@ const populateDisplay = () => {
     // Calculator shows 0 when booted
     display.textContent = 0;
 
+    // Calculation function
+    const calculation = (num1, num2, operator) => {
+        num1 = Number(num1)
+        num2 = Number(num2)
+        switch (operator) {
+            case "+":
+                return num1 + num2
+            
+            case "-":
+                return num1 - num2
+            
+            case "*":
+                return num1 * num2
+            
+            case "/":
+                return num1 / num2
+            
+            default: "Invalid Operator"
+        }
+    };
+
     // Logic when user presses numbers
     numbers.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -123,17 +144,32 @@ const populateDisplay = () => {
 
     // Logic when user presses equals
     equals.addEventListener("click", (event) => {
-        if (!operator) {
-
+        if (!storedNumber) {
+            return; 
+        } else if (!newNumber) {
+            newNumber = displayArray.join("")
+            displayArray.splice(0, displayArray.length)
+        }
+                    
+        
+        if (operator === null) {
+            return;
+        } else {
+            let value = calculation(storedNumber, newNumber, operator)
+            display.textContent = value
+            console.log(storedNumber)
+            console.log(newNumber)
+            console.log(operator)
+            console.log(value)
         }
     })
 
     // Logic when user presses clear
     clear.addEventListener("click", (event) => {
-        let firstNumber = null;
-        let secondNumber = null;
-        let operator = null;
-        let displayArray = [];
+        storedNumber = null;
+        newNumber = null;
+        operator = null;
+        displayArray = [];
         display.textContent = 0;
     })
 }
