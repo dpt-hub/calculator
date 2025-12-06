@@ -68,20 +68,22 @@ const populateDisplay = () => {
 
     // Calculation function
     const calculation = (num1, num2, operator) => {
+        
         num1 = Number(num1)
         num2 = Number(num2)
+
         switch (operator) {
             case "+":
-                return num1 + num2
+                return Math.round((num1 + num2) * 1000) / 1000
             
             case "-":
-                return num1 - num2
+                return Math.round((num1 - num2) * 1000) / 1000
             
             case "*":
-                return num1 * num2
+                return Math.round((num1 * num2) * 1000) / 1000
             
             case "/":
-                return num1 / num2
+                return Math.round((num1 / num2) * 1000) / 1000
             
             default: "Invalid Operator"
         }
@@ -127,11 +129,14 @@ const populateDisplay = () => {
                     display.textContent = storedNumber
                     operator = value
 
-                // If there is a stored number and operator, store a new Number
+                // If there is a stored number and operator, display result
                 } else {
                     newNumber = displayArray.join("")
                     displayArray.splice(0, displayArray.length)
-                    display.textContent = newNumber
+                    let calc = calculation(storedNumber, newNumber, operator)
+                    display.textContent = calc
+                    storedNumber = calc
+                    newNumber = null
                     operator = value
                 }
 
@@ -144,6 +149,7 @@ const populateDisplay = () => {
 
     // Logic when user presses equals
     equals.addEventListener("click", (event) => {
+        
         if (!storedNumber) {
             return; 
         } else if (!newNumber) {
@@ -157,6 +163,7 @@ const populateDisplay = () => {
         } else {
             let value = calculation(storedNumber, newNumber, operator)
             display.textContent = value
+            storedNumber = value
             console.log(storedNumber)
             console.log(newNumber)
             console.log(operator)
@@ -171,6 +178,14 @@ const populateDisplay = () => {
         operator = null;
         displayArray = [];
         display.textContent = 0;
+    })
+
+    // Logic when user presses backspace
+    backspace.addEventListener("click", () => {
+        if (displayArray.length !== 0) {
+            displayArray.pop()
+            display.textContent = displayArray.join("")
+        }
     })
 }
 
