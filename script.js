@@ -80,8 +80,24 @@ const populateDisplay = () => {
         let value = event.target.textContent
         if (!displayArray.includes(value)) {
             displayArray.push(value)
+            display.textContent = displayArray.join("")
         }
     })
 
-
+    // Logic when user presses operators
+    operators.forEach(btn => {
+        btn.addEventListener("click", (event) => {
+            let value = event.target.textContent
+            if (displayArray.length !== 0) {
+                firstNumber = displayArray.join("")
+                displayArray.splice(0, displayArray.length)
+                display.textContent = firstNumber
+                operator = value
+            } else {
+                operator = value
+            }
+        })
+    })
 }
+
+populateDisplay()
