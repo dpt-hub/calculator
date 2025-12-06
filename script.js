@@ -58,13 +58,13 @@ const display = document.querySelector("#display")
 
 const populateDisplay = () => {
     // Defining the variables to use
-    let firstNumber = 0;
-    let secondNumber = null;
+    let storedNumber = null;
+    let newNumber = null;
     let operator = null;
     let displayArray = []
 
     // Calculator shows 0 when booted
-    display.textContent = firstNumber;
+    display.textContent = 0;
 
     // Logic when user presses numbers
     numbers.forEach(btn => {
@@ -88,15 +88,53 @@ const populateDisplay = () => {
     operators.forEach(btn => {
         btn.addEventListener("click", (event) => {
             let value = event.target.textContent
+            
+            // If there are numbers pressed in the display
             if (displayArray.length !== 0) {
-                firstNumber = displayArray.join("")
-                displayArray.splice(0, displayArray.length)
-                display.textContent = firstNumber
-                operator = value
+
+                // And if there isn't a stored number, store it
+                if (!storedNumber) {
+                    storedNumber = displayArray.join("")
+                    displayArray.splice(0, displayArray.length)
+                    display.textContent = storedNumber
+                    operator = value
+
+                // If there is a stored number but no operator, store it
+                } else if (!operator) {
+                    storedNumber = displayArray.join("")
+                    displayArray.splice(0, displayArray.length)
+                    display.textContent = storedNumber
+                    operator = value
+
+                // If there is a stored number and operator, store a new Number
+                } else {
+                    newNumber = displayArray.join("")
+                    displayArray.splice(0, displayArray.length)
+                    display.textContent = newNumber
+                    operator = value
+                }
+
+            // If an operator was pressed before, change it to current pressed operator
             } else {
                 operator = value
             }
         })
+    })
+
+    // Logic when user presses equals
+    equals.addEventListener("click", (event) => {
+        if (!operator) {
+
+        }
+    })
+
+    // Logic when user presses clear
+    clear.addEventListener("click", (event) => {
+        let firstNumber = null;
+        let secondNumber = null;
+        let operator = null;
+        let displayArray = [];
+        display.textContent = 0;
     })
 }
 
